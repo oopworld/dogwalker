@@ -1,7 +1,7 @@
 # 😼dogwalker 
 ![loginlogo](https://github.com/oopworld/dogwalker/assets/137124485/195eda45-3642-4529-91a7-3af288597046)
 
-프로젝트 기간 : 2023.06.12 ~ 2023.08.04
+프로젝트 기간 : 2023.06.12 ~ 2023.08.04 <br>
 인원 : 5
 <br/>
 <br/>
@@ -17,10 +17,10 @@
 
 # 😼 본인이 맡은 역할 소개
 
-로그인,회원가입,마이페이지 회원수정,강아지 등록/수정,강아지산책 신청 기능 
-MemberController,ProxyController,MatchingController 일부
-회원 가입시 카카오 주소api , 지오코딩 api 활용하여 회원 주소 위도 경도 값 등록
-header,footer 모듈화로 분리 
+로그인,회원가입,마이페이지 회원수정,강아지 등록/수정,강아지산책 신청 기능 <br>
+MemberController,ProxyController,MatchingController 일부<br>
+회원 가입시 카카오 주소api , 지오코딩 api 활용하여 회원 주소 위도 경도 값 등록<br>
+header,footer 모듈화로 분리 <br>
 <br/>
 <br/>
 
