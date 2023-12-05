@@ -35,7 +35,7 @@ header,footer 모듈화로 분리
   
 Language : `Java 11` `JDK 1.8.0`
 
-Framework : `Spring Boot 4.3.3.RELEASE`
+Framework : `Spring 4.3.3.RELEASE`
 
 IDE : `STS-3.9.22.RELEASE`
 
