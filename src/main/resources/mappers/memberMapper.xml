@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    
+<mapper namespace="Member">
+
+<!--1.로그인 위해 아이디,암호 db에서 가져오기  -->  
+<select id="login" parameterType="String"  resultType="String">
+   SELECT pw FROM dw_login WHERE id = #{id}
+</select>
+ 
+ <!--2.회원 가입 위해 가입정보 db에 입력하기 -->
+<insert id="signup" parameterType="memberVO">
+	INSERT INTO dw_member values (
+	#{id},
+	#{pw},
+	#{name},
+	#{phone},
+	#{zipcode},
+	#{address},
+	#{address_detail},
+	#{nickname},
+	#{email},
+	#{photo},
+	#{latitude},
+	#{longitude},
+	sysdate
+	)
+</insert>
+
+<!-- 3.아이디 입력 중복확인 -->
+<select id="idcheck" parameterType="String" resultType="Integer">
+	SELECT count(*) FROM dw_login WHERE id = #{id:VARCHAR}
+</select>
+
+<!-- 4.회원가입에서 등록한 회원정보를 로그인테이블에도 등록 -->
+<insert id="loginRegist" parameterType="memberVO">
+	INSERT INTO dw_login VALUES(#{id},#{pw})
+</insert>
+
+<!-- 5.마이페이지에서 회원정보수정 페이지호출 -->
+<select id="memberinfo" parameterType="String" resultType="memberVO">
+	SELECT * FROM dw_member WHERE id = #{id}
+</select>
+
+<!-- 6.회원정보수정 페이지에서 회원정보 수정 -->
+<update id="memberinfoedit" parameterType="memberVO">
+	UPDATE dw_member
+	<set>
+    	<if test="newpassword != null">
+        	pw = #{newpassword},
+    	</if>
+    	phone = #{phone},
+    	zipcode = #{zipcode},
+    	nickname = #{nickname},
+    	address = #{address},
+    	address_detail = #{address_detail},
+    	email = #{email},
+    	<if test="photo != null">
+        	photo = #{photo},
+    	</if>
+    	latitude = #{latitude},
+    	longitude = #{longitude}
+	</set>
+	WHERE id = #{id}
+</update>
+
+<!-- 7. 6번에서 비밀번호도 변경했으면 dw_login테이블의 비밀번호도 변경되어야됨 -->
+<update id="loginpwedit" parameterType="memberVO">
+	UPDATE dw_login set pw=#{newpassword} WHERE id = #{id}
+</update>
+
+<!-- 8.회원의 강아지 정보 DB에서 가져오기 -->
+<select id="mydoginfo" parameterType="String" resultType="dog">
+	SELECT * FROM dw_memberdog WHERE id = #{id}
+</select>
+<!-- 9.회원의 강아지 정보 DB 수정 -->
+
+<update id="doginfoedit" parameterType="dog">
+	UPDATE dw_memberdog
+	<set>
+    	<if test="dog_name != null">
+        	dog_name = #{dog_name},
+    	</if>
+    	<if test="dog_age != null">
+        	dog_age = #{dog_age},
+    	</if>
+    	<if test="dog_breed != null">
+        	dog_breed = #{dog_breed},
+    	</if>
+    	<if test="dog_photo != null">
+        	dog_photo = #{dog_photo},
+    	</if>
+    	 <if test="dog_favtime != null">
+        	dog_favtime = #{dog_favtime}
+    	</if>
+	</set>
+	WHERE id = #{id}
+</update>
+
+<!-- 10.회원의 강아지가 없을 경우 강아지 입력 -->
+<insert id="insertMemberdog" parameterType="dog">
+    INSERT INTO dw_memberdog (id, dog_id, dog_name, dog_age, dog_breed, dog_favtime, dog_photo)
+    VALUES (#{id}, seq_memdog_dog_id.NEXTVAL, #{dog_name}, #{dog_age}, #{dog_breed}, #{dog_favtime}, #{dog_photo})
+</insert>
+
+<!-- 11.회원가입할때 회원의 포인트 잔고 0인 레코드 등록 -->
+<insert id="signbalance" parameterType="Coinpoint">
+	INSERT INTO point values (seq_point_p_num.NEXTVAL,#{id},sysdate,'s',0,0)
+</insert>
+
+</mapper>
+
+
+
+
+
+
+
+

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    
+<mapper namespace="Board2">
+
+    <!-- 1. FREEBOARD 테이블에서 SQL 작업(1.글목록보기) -->  
+    <select id="selectList2" parameterType="map" resultType="BoardfreeVO">
+        select seq2, writer2, title2, content2, pwd2, hit2, regdate2, filename2
+        from (select a.*, rownum rnum2
+              from (select * from FREEBOARD
+                    <where>
+                        <if test="keyWord != null and keyField == 'title2'">
+                            title2 like '%' || #{keyWord} || '%'
+                        </if>
+                        <if test="keyWord != null and keyField == 'writer2'">
+                            writer2 like '%' || #{keyWord} || '%'
+                        </if>
+                        <if test="keyWord != null and keyField == 'content2'">
+                            content2 like '%' || #{keyWord} || '%'
+                        </if>
+                        <if test="keyWord != null and keyField == 'all'">
+                            title2 like '%' || #{keyWord} || '%' or
+                            writer2 like '%' || #{keyWord} || '%' or
+                            content2 like '%' || #{keyWord} || '%'
+                        </if>
+                    </where>
+              order by seq2 desc) a) 
+        <![CDATA[
+        where rnum2 >= #{start} AND rnum2 <= #{end}
+        ]]>
+    </select>
+    
+    <!-- 2. 검색어에 해당하는 총 레코드 수 구하기 (java.lang.Integer -> Integer -> int) -->
+    <select id="selectCount2" parameterType="map" resultType="Integer">
+        select count(*) from FREEBOARD
+        <where>
+            <if test="keyWord != null and keyField == 'title2'">
+                title2 like '%' || #{keyWord} || '%'
+            </if>
+            <if test="keyWord != null and keyField == 'writer2'">
+                writer2 like '%' || #{keyWord} || '%'
+            </if>
+            <if test="keyWord != null and keyField == 'content2'">
+                content2 like '%' || #{keyWord} || '%'
+            </if>
+            <if test="keyWord != null and keyField == 'all'">
+                title2 like '%' || #{keyWord} || '%' or
+                writer2 like '%' || #{keyWord} || '%' or
+                content2 like '%' || #{keyWord} || '%'
+            </if>
+        </where>
+    </select>
+
+    <!-- 최대값 구하기 -->
+    <select id="getNewSeq" resultType="int">
+        select max(seq2) from FREEBOARD
+    </select>
+
+    <!-- 3. 글쓰기 (mysql(now()) 업로드하는 파일명만, jdbcType=VARCHAR(문자열) 추가) -->
+    <insert id="insertBoard2" parameterType="BoardfreeVO">
+        insert into FREEBOARD(seq2, writer2, title2, content2, pwd2, hit2, regdate2, filename2)
+        values(#{seq2}, #{writer2}, #{title2}, #{content2}, #{pwd2}, 0, sysdate, #{filename2, jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 4. 조회수 증가하기 -->
+    <update id="updateHit2" parameterType="Integer">
+        update FREEBOARD set hit2 = hit2 + 1 where seq2 = #{seq2}
+    </update>
+
+    <!-- 5. 게시물 번호에 따른 레코드 한개 상세보기 -->
+    <select id="selectBoard2" parameterType="Integer" resultType="BoardfreeVO">
+        select * from FREEBOARD where seq2 = #{seq2}
+    </select>
+
+    <!-- 6. 글 삭제하기 -->
+    <delete id="deleteBoard2" parameterType="Integer">
+        delete from FREEBOARD where seq2 = #{seq2}
+    </delete>
+
+    <!-- 7. 글 수정하기 -->
+    <update id="updateBoard2" parameterType="BoardfreeVO">
+        update FREEBOARD set writer2 = #{writer2}, title2 = #{title2}, content2 = #{content2}, filename2 = #{filename2, jdbcType=VARCHAR}
+        where seq2 = #{seq2}
+    </update>
+
+</mapper>

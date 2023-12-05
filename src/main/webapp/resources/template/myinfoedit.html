@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Layout</title>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<style>
+   		ul{
+   		list-style:none;
+   		}
+   		
+   		.nav-left-sub1{
+   		background:blue;
+   		}
+   		.nav-left-sub1 > li {
+   		background:white;
+   		}
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      
+      .inputerror{
+      	border:1px solid red;
+      }
+      
+      .inputsuccess{
+		border:1px solid green;
+      }
+      
+      .signupdiv{
+      position:relative;
+      	width:500px;
+      	margin:0 auto;
+      	margin-bottom:50px;
+      }
+      
+      .form-label{
+      font-weight:bold;
+      color:#4169E1;
+      }
+      
+      .cannotedit{
+      border:1px solid black;
+      }
+    </style>
+
+</head>
+<body>
+<!-- Header -->
+<table border="solid 1px white" cellpadding="0" cellspacing="0" color="#a0a0a0" align="center" width="700">
+<tr valign="top" height="10" >
+<td >
+	<div id="header"></div>
+</td>
+</tr>
+<tr valign="middle" bgcolor="#ffffff"><td>
+<!-- 본문 -->	
+<div class="signupdiv">
+		<h4 class="mb-3">회원정보수정</h4>
+        <form class="needs-validation" name="editform" enctype="multipart/form-data" method="post" action="myinfoedit">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="firstName" class="form-label">이름</label>
+              <input type="text" class="form-control cannotedit" id="name" name="name" placeholder="이름" readonly >
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="lastName" class="form-label">전화번호</label>
+              <input type="text" class="form-control inputnoempty editsuccess" id="phone" name="phone" placeholder="전화번호" >
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+
+            <div class="col-12">
+              <label for="username" class="form-label">닉네임</label>
+              <div class="input-group has-validation">
+			  <input type="text" class="form-control inputnoempty editsuccess" id="nickname" name="nickname" placeholder="닉네임">
+			  <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+              </div>
+            </div>
+            
+             <div class="col-6">
+              <label for="id" class="form-label">아이디</label>
+              <input type="text" class="form-control cannotedit" id="id" name="id" placeholder="아이디" readonly >
+              <span style="font-size:5px;color:red;display:none" >아이디는 7자 이상 입력해야됩니다.</span>
+             </div>
+            
+            <div class="col-6">
+              <label for="password" class="form-label">기존 비밀번호</label>
+              <input type="password" class="form-control inputerror pwd" id="pw" name="pw" placeholder="비밀번호">
+              <span style="font-size:5px;color:red;display:none" >비밀번호는 8자 이상 입력해야됩니다.</span>
+             </div>
+             
+             <div class="col-6">
+              <label for="newpassword" class="form-label">변경할 비밀번호</label>
+              <input type="password" class="form-control editsuccess pwd" id="newpassword" name="newpassword" placeholder="비밀번호">
+              <span style="font-size:5px;color:red;display:none" >비밀번호는 8자 이상 입력해야됩니다.</span>
+             </div>
+             
+             <div class="col-6">
+              <label for="repassword" class="form-label">변경할 비밀번호 확인</label>
+              <input type="password" class="form-control editsuccess" id="repassword" name="repassword" placeholder="비밀번호">
+              <span style="font-size:5px;color:red;display:none" >비밀번호가 일치하지않습니다.</span>
+             </div>
+
+            <div class="col-8">
+              <label for="email" class="form-label">이메일</label>
+              <input type="email" class="form-control inputnoempty editsuccess" id="email" name="email" placeholder="이메일@example.com">
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+            
+
+			<div class="col-md-4">
+              <label for="photo" class="form-label">사진</label>
+              <input type="file" id="upload" class="buttonSuccess" name="upload">
+            </div>
+						
+            <div class="col-10">
+              <label for="address" class="form-label">주소</label>
+              <input type="text" class="form-control inputnoempty editsuccess geoagain" id="address" name="address" placeholder="주소검색 버튼으로 주소를 입력하세요" readonly>
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+            
+			<div class="col-2">
+              <label for="addressSearch" class="form-label">주소찾기</label>
+              <input type="button" class="btn btn-info text-white" id="address_search" value="주소 검색" onclick="searchAddress()" >
+            </div>
+
+            <div class="col-md-7">
+              <label for="address" class="form-label">상세주소</label>
+              <input type="text" class="form-control inputnoempty editsuccess geoagain" id="address_detail" name="address_detail" placeholder="동을 입력하세요" >
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+			
+			<div class="col-md-3">
+              <label for="addressSearch" class="form-label">지오코딩</label>
+              <input type="button" class="btn btn-info text-white buttonSuccess" id="geoMap" value="지오코딩" onclick="getGEOmap()" >
+            </div>
+
+
+            <div class="col-md-2">
+              <label for="zip" class="form-label">우편번호</label>
+              <input type="text" class="form-control inputnoempty editsuccess" id="zipcode" name="zipcode" placeholder="우편번호" readonly>
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+            
+		<input type="hidden" name="latitude" id="latitude">
+		<input type="hidden" name="longitude" id="longitude">
+		<input type="hidden" name="joindate" id="joindate">
+        </form>
+         
+         
+        <hr class="my-4">
+
+		<div class="col-md-6">
+			<span class="w-100 btn btn-primary btn-lg col-md-4" onclick="editSubmitCheck()">정보수정</span>
+		</div>
+		<div class="col-md-6">
+			<button class="w-100 btn btn-danger btn-lg col-md-8" onclick="javascript:memberInfoLoad()">수정취소</button>
+		</div>
+</div>
+</div>
+<!-- 본문끝 -->
+<!-- Footer -->
+</td></tr>
+<tr valign="bottom" height="150"  bgcolor="#ffffff">
+<td>
+	<div id="footer"></div>
+</td>
+</tr>
+</table>
+<script>
+
+$(function(){//아이디 7자이상
+	
+
+
+$('.pwd').change(function(){//비밀번호 8자이상
+	if($(this).val().length<8 && $(this).val().length>0){
+		$(this).addClass('inputerror');
+		$(this).removeClass('inputsuccess');
+		$(this).next().css('display','inline-block');
+	}else{
+		$(this).addClass('inputsuccess');
+		$(this).removeClass('inputerror');
+		$(this).addClass('editsuccess');
+		$(this).next().css('display','none');
+	}
+	
+})
+
+$('.inputnoempty').change(function(){//이름,전화번호,닉네임,이메일,주소,상세주소,우편번호
+	$(this).removeClass('editSuccess');
+	if($(this).val().length<1){
+		$(this).addClass('inputerror');
+		$(this).removeClass('editsuccess');
+		$(this).removeClass('inputsuccess');
+		$(this).next().css('display','inline-block');
+	}else{
+		$(this).addClass('editsuccess');
+		$(this).addClass('inputsuccess');
+		$(this).removeClass('inputerror');
+		$(this).next().css('display','none');
+		
+	}
+	
+})
+
+$('.geoagain').change(function(){
+	$('#geoMap').removeClass('buttonSuccess');//주소 바꾸면 지오코딩버튼도 다시 눌러줘야됨
+	$(this).removeClass('editSuccess');
+	
+	if($(this).val().length<1){
+		$(this).addClass('inputerror');
+		$(this).removeClass('inputsuccess');
+		$(this).removeClass('editsuccess');
+		$(this).next().css('display','inline-block');
+	}else{
+		$(this).addClass('editsuccess');
+		$(this).addClass('inputsuccess');
+		$(this).removeClass('inputerror');
+		$(this).next().css('display','none');
+		
+	}
+})
+
+
+$('#newpassword').on('input',function(){//change로 하면 변경 한번에 대해서만 적용됨
+	if($(this).val()!=$('#repassword').val()){
+		$('#repassword').addClass('inputerror');
+		$('#repassword').removeClass('inputsuccess');
+		$('#repassword').removeClass('editsuccess');
+		$('#repassword').next().css('display','inline-block');
+	}else{
+		$('#rewpassword').addClass('editsuccess');
+		$('#rewpassword').addClass('inputsuccess');
+		$('#rewpassword').removeClass('inputerror');
+		$('#rewpassword').next().css('display','none');
+		
+	}
+	
+})
+
+$('#repassword').on('input',function(){//change로 하면 변경 한번에 대해서만 적용됨
+	if($(this).val()!=$('#newpassword').val()){
+		$(this).addClass('inputerror');
+		$(this).removeClass('inputsuccess');
+		$(this).removeClass('editsuccess');
+		$(this).next().css('display','inline-block');
+	}else{
+		$(this).addClass('editsuccess');
+		$(this).addClass('inputsuccess');
+		$(this).removeClass('inputerror');
+		$(this).next().css('display','none');
+		
+	}
+	
+})
+
+$('#upload').change(function(){//이미지의 확장자는 'jpg', 'jpeg', 'png', 'gif' 만 가능하도록 설정
+    
+	  var allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+	  var fileName = $(this).val();
+	  var fileExtension = fileName.split('.').pop().toLowerCase();
+
+	  if ($.inArray(fileExtension, allowedExtensions) === -1) {
+	        alert('이미지는 img, png, jpeg, gif 확장자만 등록가능합니다.');
+	        $(this).val(''); 
+	    } else {
+	        $(this).removeClass('buttonnotyet');
+	        $(this).addClass('buttonSuccess');
+	    }
+
+	})
+	
+})
+
+function editSubmitCheck(){
+
+    		
+    		if(!document.getElementById('phone').classList.contains('editsuccess')){
+    		
+    			alert(document.getElementById('phone').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('nickname').classList.contains('editsuccess')){
+    	
+    			alert(document.getElementById('nickname').parentElement.parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('pw').classList.contains('editsuccess')){
+    	
+    			alert(document.getElementById('pw').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('email').classList.contains('editsuccess')){
+    	
+    			alert(document.getElementById('email').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('address').classList.contains('editsuccess')){
+    		
+    			alert(document.getElementById('address').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			document.getElementById('address').focus();
+    			return false;
+    		}
+    		if(!document.getElementById('address_detail').classList.contains('editsuccess')){
+    	
+    			alert(document.getElementById('address_detail').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('zipcode').classList.contains('editsuccess')){
+    		
+    			alert(document.getElementById('zipcode').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('geoMap').classList.contains('buttonSuccess')){
+    		    
+    			alert('지오 코딩 버튼을 실행시켜주세요');
+    			this.focus();
+    			return false;
+    			
+    		}
+    		
+    		if(!document.getElementById('upload').classList.contains('buttonSuccess')){
+    		    
+    			alert('사진을 등록해주세요');
+    			return false;
+    			
+    		}
+    		
+    		if(!document.getElementById('newpassword').classList.contains('editsuccess')){
+    		    
+    			alert('새 비밀번호를 확인해주세요');
+    			return false;
+    			
+    		}
+			
+    		if(!document.getElementById('repassword').classList.contains('editsuccess')){
+    		    
+    			alert('새 비밀번호를 확인해주세요');
+    			return false;
+    			
+    		}
+   
+    			var EditFormData = new FormData();
+    			//각 입력필드마다 value 의 타입이 String,Object,int로 서로 다를수있으며,MemberVO의 클래스와 다를경우 오류나기때문에 변환해서 전송
+    			EditFormData.append('phone',document.getElementById('phone').value);
+    			EditFormData.append('nickname',document.getElementById('nickname').value);
+    			EditFormData.append('pw',document.getElementById('pw').value);
+    			EditFormData.append('email',document.getElementById('email').value);
+    			EditFormData.append('address',document.getElementById('address').value);
+    			EditFormData.append('address_detail',document.getElementById('address_detail').value);
+    			EditFormData.append('zipcode',document.getElementById('zipcode').value);
+    			EditFormData.append('latitude',document.getElementById('latitude').value);
+    			EditFormData.append('longitude',document.getElementById('longitude').value);
+    			
+    			if(document.getElementById('repassword').value.length>7){
+    				EditFormData.append('newpassword',document.getElementById('newpassword').value);
+    			}
+				
+    			if(document.getElementById('upload').value.length>1){
+    				EditFormData.append('upload',document.getElementById('upload').files[0]);
+    			}
+	  			
+    			var baseUrl = window.location.origin;
+    			var loginUrl = baseUrl+"/mypage";
+    			
+    			$.ajax({
+    			    url: 'myinfoedit',
+    			    method: 'POST',
+    			    data: EditFormData,
+    			    processData: false, // 데이터 처리하지 않도록 설정
+    			    contentType: false, // 컨텐츠 타입을 설정하지 않음
+    			    enctype: 'multipart/form-data', // 필요 없음
+    			    cache: false, // 캐시 사용하지 않도록 설정
+    			    success: function(result) {
+    			        if (result == "success") {
+    			            alert("회원수정에 성공하였습니다.");
+    			            console.log(baseUrl);
+    			            console.log(loginUrl);
+    			            document.location = loginUrl;
+    			        } else if (result == "pwincorrect") {
+    			            alert("비밀번호가 일치하지 않습니다.");
+    			        } else {
+    			            alert("회원수정에 실패했습니다.");
+    			        }
+    			    },
+    			    error: function(result) {
+    			        console.log(typeof(formData));
+    			        alert("서버요청실패!!");
+    			    }
+    			});			
+    		//EditFormData.submit();
+		
+    	}
+	
+		
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dogwalker.mappers.ItemMapper">
+
+    <!-- 상품 목록 및 페이징 처리 -->
+    <select id="getAllItemsList" resultType="com.dogwalker.domain.ItemVO">
+	    SELECT * FROM (
+	        SELECT
+	            rownum rnum,
+	            it_num,
+	            catecode,
+	            it_name,
+	            it_img,
+	            it_content,
+	            it_price,
+	            it_rdate,
+	            it_cnt,
+	            it_deleted
+	        FROM (
+	            SELECT
+	                it_num,
+	                catecode,
+	                it_name,
+	                it_img,
+	                it_content,
+	                it_price,
+	                it_rdate,
+	                it_cnt,
+	                it_deleted
+	
+	                FROM item
+	                WHERE it_deleted = 0
+	                AND (catecode = #{catecode} OR #{catecode} IS NULL)
+	                AND it_name LIKE '%' || #{searchWord} || '%'
+	                ORDER BY it_num DESC
+	        )
+	    ) WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{pageSize}
+	</select>
+	
+	<!-- 카테고리에 따른 상품 수 반환  -->
+	<select id="countItemsByCategory" resultType="int">
+	    SELECT COUNT(*) FROM item WHERE catecode = #{catecode}
+	</select>
+
+    
+	<!-- 총 상품 개수를 반환 -->
+	<select id="countItems" resultType="int">
+	    SELECT COUNT(*)
+	    FROM item
+	    WHERE it_deleted = 0
+	</select>
+	
+    <!-- 상품 추가 -->
+    <insert id="insertItem" parameterType="com.dogwalker.domain.ItemVO">
+        INSERT INTO item (
+        	it_num
+        	, it_name
+        	, it_img
+        	, it_content
+        	, it_price
+        	, it_rdate
+        	, it_cnt
+        	, it_deleted
+        	, catecode
+        	)
+        VALUES (
+        	#{it_num}
+        	, #{it_name}
+        	, #{it_img}
+        	, #{it_content}
+        	, #{it_price}
+        	, sysdate
+        	, #{it_cnt}
+        	, #{it_deleted}
+        	, #{catecode}
+       	)
+    </insert>
+    
+    <!-- 상품 수정 -->
+	<update id="updateItem" parameterType="com.dogwalker.domain.ItemVO">
+	    UPDATE item
+	    SET
+	        catecode = #{catecode},
+	        it_name = #{it_name},
+	        it_img = #{it_img},
+	        it_content = #{it_content},
+	        it_price = #{it_price},
+	        it_cnt = #{it_cnt},
+	        it_deleted = #{it_deleted}
+	    WHERE it_num = #{it_num}
+	</update>
+    
+    <!-- 상품 논리적 삭제 메서드 -->
+    <update id="deleteItem">
+        UPDATE item
+        SET it_deleted = 1
+        WHERE it_num = #{it_num}
+    </update>
+    
+    <!-- 상품상세 메서드 -->
+    <select id="getItem"  resultType="com.dogwalker.domain.ItemVO">
+	    SELECT
+	        it_num,
+	        catecode,
+	        it_name,
+	        it_img,
+	        it_content,
+	        it_price,
+	        it_rdate,
+	        it_cnt,
+	        it_deleted
+	    FROM item
+	    WHERE it_num = #{it_num}
+	</select>
+	 
+	<!-- 상품 총 갯수 -->
+	<select id="count" resultType="int">
+		select count(it_num) from item
+	</select>
+		
+</mapper>

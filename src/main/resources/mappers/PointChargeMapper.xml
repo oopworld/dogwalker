@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Point">
+
+
+
+	<!-- 포인트 충전 -->
+	<update id="updatebalance" parameterType="point">
+		UPDATE pointbalance 
+		SET balance = balance + #{amount}
+		where id = #{id}
+	</update>
+	<!-- 로그 기록 -->
+	<insert id="inserthistory" parameterType="point">
+		INSERT into pointhistory (id, charge_date, amount, history)
+		values (#{id},sysdate,#{amount},#{history})
+		
+	</insert>
+	
+	<!-- <update id="addPoint" parameterType="point">
+		SELECT charge
+        from balance = balance + #{amount}
+        WHERE id = #{id}
+	</update> -->
+	<!-- 넘사벽 갓건하 피드백 반박시 꿀밤 -->
+	
+	
+	
+	
+	
+	
+	
+<!-- <update id="getTotalPoint" parameterType="int" > UPDATE point_charge 
+		SET charge = charge + #{charge_amount} WHERE user_id = #{user_id} </update>
+
+	포인트 충전
+
+
+	포인트 충전 내역 및 이력 조회
+	<select id="getPointChargeHistory" parameterType="String"
+		resultType="com.dogwalker.domain.PointChargeVO">
+		SELECT charge_id, user_id, charge_amount, charge_date
+		FROM point_charge
+		WHERE user_id = #{user_id}
+		ORDER BY charge_date DESC
+	</select>
+
+	<insert id="insertPointCharge"
+		parameterType="com.dogwalker.domain.PointChargeVO">
+		INSERT INTO point_charge (user_id, charge_amount, charge_date)
+		VALUES (#{user_id}, #{charge_amount}, #{charge_date})
+	</insert>
+
+	<select id="getChargeInfo" parameterType="String" resultType="point"> 
+		SELECT * FROM point_table WHERE id = #{id} </select> <insert id="addChargeInfo" 
+		parameterType="point"> INSERT INTO point_table (id, p_point, p_pointdate, 
+		p_type) VALUES (#{id}, #{p_point}, #{p_pointdate}, #{p_type}) </insert> <update 
+		id="updateChargeInfo" parameterType="point"> UPDATE point_table SET p_point 
+		= #{p_point}, p_pointdate = #{p_pointdate}, p_type = #{p_type} WHERE id = 
+		#{id} </update> <delete id="deleteChargeInfo" parameterType="String"> DELETE 
+		FROM point_table WHERE id = #{id} </delete> 8.15 <update id="pointCharge" 
+		parameterType="point"> UPDATE point_table SET p_point = p_point + #{p_point} 
+		WHERE id = #{id} </update> <insert id="pointSave" parameterType="point"> 
+		INSERT INTO point_table(p_number, id, p_point, p_pointdate, p_type) VALUES(point_table_seq.nextval, 
+		#{id}, #{p_point}, SYSTIMESTAMP, #{p_type}) </insert> -->
+
+</mapper>

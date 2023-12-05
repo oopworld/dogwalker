@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    
+<mapper namespace="Board3">
+
+<!--1.DOGBOARD  테이블에서 SQL작업(1.글목록보기)   -->  
+<select id="selectList3" parameterType="map"  resultType="BoarddogVO">
+    select seq3,writer3,title3,content3,pwd3,hit3,regdate3,filename3
+     	 from (select a.*,rownum rnum
+     	   from (select * from DOGBOARD  
+     	         <where>
+     	         	<if test="keyWord!=null and keyField=='title3'">
+     	         	      title3 like '%' || #{keyWord} || '%'
+     	         	</if>
+     	         	<if test="keyWord!=null and keyField=='writer3'">
+     	         	      writer3 like '%' || #{keyWord} || '%'
+     	         	</if>
+     	         	<if test="keyWord!=null and keyField=='content3'">
+     	         	      content3 like '%' || #{keyWord} || '%'
+     	         	</if>
+     	         	<if test="keyWord!=null and keyField=='all3'">
+     	         	      title3 like '%' || #{keyWord} || '%' or
+     	         	      writer3 like '%' || #{keyWord} || '%' or
+     	         	      content3 like '%' || #{keyWord} || '%'
+     	         	</if>
+     	         </where>
+     	   order by seq3 desc) a) 
+   <![CDATA[
+    where rnum >=#{start} AND rnum <=#{end}
+     ]]>
+</select>
+ 
+ <!-- 2.검색어에 해당하는 총레코드수 구하기(java.lang.Integer->Integer->int) -->
+ <select id="selectCount3" parameterType="map" resultType="Integer">
+    select count(*) from DOGBOARD 
+ 			<where>
+     	         	<if test="keyWord!=null and keyField=='title3'">
+     	         	      title3 like '%' || #{keyWord} || '%'
+     	         	</if>
+     	         	<if test="keyWord!=null and keyField=='writer3'">
+     	         	      writer3 like '%' || #{keyWord} || '%'
+     	         	</if>
+     	         	<if test="keyWord!=null and keyField=='content3'">
+     	         	      content3 like '%' || #{keyWord} || '%'
+     	         	</if>
+     	         	<if test="keyWord!=null and keyField=='all3'">
+     	         	      title3 like '%' || #{keyWord} || '%' or
+     	         	      writer3 like '%' || #{keyWord} || '%' or
+     	         	      content3 like '%' || #{keyWord} || '%'
+     	         	</if>
+     	         </where>
+ </select>
+ 
+ <!--최대값구하기  -->
+ <select id="getNewSeq" resultType="int">
+     select max(seq3) from DOGBOARD 
+ </select>
+ 
+ <!--3.글쓰기 (sysdate,mysql(now()) 
+ 업로드하는 파일명만 ,jdbcType=VARCHAR(문자열) 추가-->
+ <insert id="insertBoard3" parameterType="BoarddogVO">
+   insert into DOGBOARD (seq3,writer3,title3,content3,pwd3,hit3,regdate3,filename3)
+   values(#{seq3},#{writer3},#{title3},#{content3},#{pwd3},0,sysdate,
+             #{filename3,jdbcType=VARCHAR})
+ </insert>
+ 
+ <!--4.조회수 증가하기 java.lang.String=>String=>string(X) -->
+ <update id="updateHit3" parameterType="Integer">
+    update DOGBOARD  set hit3=hit3+1 where seq3=#{seq3}
+ </update>
+ 
+ <!--5.게시물번호에 따른 레코드 한개 상세보기  -->
+ <select id="selectBoard3" parameterType="Integer" resultType="BoarddogVO">
+     select * from DOGBOARD  where seq3=#{seq3}
+ </select>
+ 
+ <!-- 6.글삭제하기  -->
+ <delete id="deleteBoard3" parameterType="Integer">
+    delete from DOGBOARD  where seq3=#{seq3}
+ </delete>
+ 
+ <!-- 7.글수정하기 -->
+ <update id="updateBoard3" parameterType="BoarddogVO">
+   update DOGBOARD  set writer3=#{writer3},title3=#{title3}
+   ,content3=#{content3},filename3=#{filename3:VARCHAR}
+   where seq3=#{seq3}
+ </update>
+</mapper>

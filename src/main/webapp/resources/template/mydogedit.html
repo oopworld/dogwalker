@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Layout</title>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<style>
+   		ul{
+   		list-style:none;
+   		}
+   		
+   		.nav-left-sub1{
+   		background:blue;
+   		}
+   		.nav-left-sub1 > li {
+   		background:white;
+   		}
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      
+      .inputerror{
+      	border:1px solid red;
+      }
+      
+      .inputsuccess{
+		border:1px solid green;
+      }
+      
+      .signupdiv{
+      position:relative;
+      	width:500px;
+      	margin:0 auto;
+      	margin-bottom:50px;
+      }
+      
+      .form-label{
+      font-weight:bold;
+      color:#4169E1;
+      }
+      
+      .cannotedit{
+      border:1px solid black;
+      }
+    </style>
+
+</head>
+<body>
+<!-- Header -->
+<table border="solid 1px white" cellpadding="0" cellspacing="0" color="#a0a0a0" align="center" width="700">
+<tr valign="top" height="10" >
+<td >
+	<div id="header"></div>
+</td>
+</tr>
+<tr valign="middle" bgcolor="#ffffff"><td>
+<!-- 본문 -->	
+<div class="signupdiv">
+		<h4 class="mb-3">강아지 정보 수정</h4>
+        <form class="needs-validation" name="editform" enctype="multipart/form-data" method="post" action="myinfoedit">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="DogName" class="form-label">강아지 이름</label>
+              <input type="text" class="form-control inputnoempty editsuccess" id="dog_name" name="dog_name">
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="DogAge" class="form-label">강아지 나이</label>
+              <input type="text" class="form-control inputnoempty editsuccess" id="dog_age" name="dog_age" placeholder="강아지 나이" >
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+
+             <div class="col-6">
+              <label for="id" class="form-label">회원 ID</label>
+              <input type="text" class="form-control cannotedit" id="id" name="id" placeholder="아이디" readonly >
+              <span style="font-size:5px;color:red;display:none" >아이디는 7자 이상 입력해야됩니다.</span>
+             </div>
+             
+			<div class="col-6">
+              <label for="dog_favtime" class="form-label">산책 선호 시간</label>
+              <input type="text" class="form-control inputnoempty editsuccess" id="dog_favtime" name="dog_favtime">
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+            
+
+			<div class="col-md-4">
+              <label for="dog_photo" class="form-label">사진</label>
+              <input type="file" id="upload" class="buttonSuccess" name="upload">
+            </div>
+					
+			<div class="col-md-2">
+			</div>
+						
+			<div class="col-md-6">
+              <label for="dog_breed" class="form-label">견종</label>
+              <input type="text" class="form-control inputnoempty editsuccess" id="dog_breed" name="dog_breed">
+              <span style="font-size:5px;color:red;display:none" >필수입력입니다.</span>
+            </div>
+            
+        </form>
+         
+         
+        <hr class="my-4">
+
+		<div class="col-md-6">
+			<span class="w-100 btn btn-primary btn-lg col-md-4" onclick="mydogEdit()">정보수정</span>
+		</div>
+		<div class="col-md-6">
+			<button class="w-100 btn btn-danger btn-lg col-md-8" onclick="javascript:mydogInfoLoad()">수정취소</button>
+		</div>
+</div>
+</div>
+<!-- 본문끝 -->
+<!-- Footer -->
+</td></tr>
+<tr valign="bottom" height="150"  bgcolor="#ffffff">
+<td>
+	<div id="footer"></div>
+</td>
+</tr>
+</table>
+<script>
+
+var testFormData;
+
+$(function(){//아이디 7자이상
+	
+
+$('.inputnoempty').change(function(){//이름,전화번호,닉네임,이메일,주소,상세주소,우편번호
+	$(this).removeClass('editSuccess');
+	if($(this).val().length<1){
+		$(this).addClass('inputerror');
+		$(this).removeClass('editsuccess');
+		$(this).removeClass('inputsuccess');
+		$(this).next().css('display','inline-block');
+	}else{
+		$(this).addClass('editsuccess');
+		$(this).addClass('inputsuccess');
+		$(this).removeClass('inputerror');
+		$(this).next().css('display','none');
+		
+	}
+	
+})
+
+
+$('#upload').change(function(){//이미지의 확장자는 'jpg', 'jpeg', 'png', 'gif' 만 가능하도록 설정
+    
+	  var allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+	  var fileName = $(this).val();
+	  var fileExtension = fileName.split('.').pop().toLowerCase();
+
+	  if ($.inArray(fileExtension, allowedExtensions) === -1) {
+	        alert('이미지는 img, png, jpeg, gif 확장자만 등록가능합니다.');
+	        $(this).val(''); 
+	    } else {
+	        $(this).removeClass('buttonnotyet');
+	        $(this).addClass('buttonSuccess');
+	    }
+
+	})
+	
+})
+
+function mydogEdit(){
+
+    		
+    		if(!document.getElementById('dog_name').classList.contains('editsuccess')){
+    		
+    			alert(document.getElementById('dog_name').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('dog_age').classList.contains('editsuccess')){
+    	
+    			alert(document.getElementById('dog_age').parentElement.parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('dog_breed').classList.contains('editsuccess')){
+    	
+    			alert(document.getElementById('dog_breed').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    		if(!document.getElementById('dog_favtime').classList.contains('editsuccess')){
+    	
+    			alert(document.getElementById('dog_favtime').parentElement.firstElementChild.innerHTML+' 칸을 확인해주세요');
+    			this.focus();
+    			return false;
+    		}
+    	
+    		
+    		if(!document.getElementById('upload').classList.contains('buttonSuccess')){
+    		    
+    			alert('사진을 등록해주세요');
+    			return false;
+    			
+    		}
+    	
+   
+    			var dogFormData = new FormData();
+    			//각 입력필드마다 value 의 타입이 String,Object,int로 서로 다를수있으며,DogVO의 클래스와 다를경우 오류나기때문에 변환해서 전송
+    			dogFormData.append('dog_name',document.getElementById('dog_name').value);
+    			dogFormData.append('dog_age',document.getElementById('dog_age').value);
+    			dogFormData.append('dog_breed',document.getElementById('dog_breed').value);
+    			dogFormData.append('dog_favtime',document.getElementById('dog_favtime').value);
+    			dogFormData.append('id',document.getElementById('id').value);
+
+    			if(document.getElementById('upload').value.length>1){
+    				dogFormData.append('upload',document.getElementById('upload').files[0]);
+    			}
+
+    			$.ajax({
+    			    url: 'mydogedit',
+    			    method: 'POST',
+    			    data: dogFormData,
+    			    processData: false, // 데이터 처리하지 않도록 설정
+    			    contentType: false, // 컨텐츠 타입을 설정하지 않음
+    			    enctype: 'multipart/form-data', // 필요 없음
+    			    cache: false, // 캐시 사용하지 않도록 설정
+    			    success: function(result) {
+    			        if (result == "success") {
+    			        	mydogInfoLoad();
+    			        	alert("강아지 정보 수정에 성공하였습니다.");
+    			        } else {
+    			            alert("강아지 정보 수정에 실패했습니다.");
+    			        }
+    			    },
+    			    error: function(result) {
+    			        console.log(typeof(formData));
+    			        alert("서버요청실패!!");
+    			    }
+    			});			
+    		//EditFormData.submit();
+		
+    	}
+	
+		
+</script>
+</body>
+</html>

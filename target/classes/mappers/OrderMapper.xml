@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="OrderMapper">
+
+    <!-- 주문 추가 -->
+    <insert id="placeOrder" parameterType="com.dogwalker.domain.OrderVO">
+	    INSERT INTO DW_ORDER (
+	           ORDER_NUM
+	         , ID
+	         , ORDER_DATE
+	         , ORDER_STATUS
+	         , ADRESS1
+	         , ADRESS2
+	         , USEPOINT
+	    )
+	    SELECT
+	           #{order_num}
+	         , #{id}
+	         , #{order_date}
+	         , #{order_status}
+	         , M.ADRESS
+	         , M.ADRESS_DETAIL
+	         , #{usepoint}
+	    FROM DW_MEMBER M
+	    WHERE M.ID = #{id}
+	</insert>
+
+
+    <!-- Select order based on id -->
+    <select id="selectOrderById" parameterType="string" resultType="com.dogwalker.domain.MemberVO">
+         SELECT ID
+			  , PW
+			  , NAME
+			  , PHONE
+			  , ZIPCODE
+			  , ADDRESS
+			  , ADDRESS_DETAIL
+			  , NICKNAME
+			  , EMAIL
+			  , PHOTO
+			  , LATITUDE
+			  , LONGITUDE
+			  , JOINDATE
+    	   FROM dw_member
+	      WHERE id = #{id}
+    </select>
+
+</mapper>

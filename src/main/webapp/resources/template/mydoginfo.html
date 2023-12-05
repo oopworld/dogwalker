@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MyInfo</title>
+<style>
+   		ul{
+   		list-style:none;
+   		}
+   		
+   		.nav-left-sub1{
+   		background:blue;
+   		}
+   		.nav-left-sub1 > li {
+   		background:white;
+   		}
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      
+      .inputerror{
+      	border:1px solid red;
+      }
+      
+      .inputsuccess{
+		border:1px solid green;
+      }
+      
+      .signupdiv{
+      position:relative;
+      	width:500px;
+      	margin:0 auto;
+      	margin-bottom:50px;
+      }
+      
+      .form-label{
+      font-weight:bold;
+      color:#4169E1;
+      }
+      
+    </style>
+
+</head>
+<body>
+<!-- Header -->
+<table border="solid 1px white" cellpadding="0" cellspacing="0" color="#a0a0a0" align="center" width="700">
+<tr valign="top" height="10" >
+<td >
+	<div id="header"></div>
+</td>
+</tr>
+<tr valign="middle" bgcolor="#ffffff"><td>
+<!-- 본문 -->	
+<div class="signupdiv">
+		<h4 class="mb-3">강아지 정보</h4>
+        <form class="needs-validation" name="signform" enctype="multipart/form-data" method="post" action="signup">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="DogName" class="form-label">강아지 이름</label>
+              <input type="text" class="form-control" id="dog_name" name="dog_name" readonly >
+             </div>
+
+            <div class="col-sm-6">
+              <label for="DogAge" class="form-label">강아지 나이</label>
+              <input type="text" class="form-control" id="dog_age" name="dog_age" readonly >
+            </div>
+
+            <div class="col-md-4">
+              <label for="username" class="form-label">회원 ID</label>
+			  <input type="text" class="form-control" id="id" name="id" readonly>
+			</div>
+              
+            <div class="col-md-8">
+              <label for="dog_favtime" class="form-label">산책 선호 시간</label>
+              <input type="text" class="form-control" id="dog_favtime" name="dog_favtime">
+             </div>
+                       
+             <div class="col-md-12">
+              <label for="dog_breed" class="form-label">견종</label>
+              <input type="text" class="form-control" id="dog_breed" name="dog_breed" readonly >
+             </div>
+
+          <hr class="my-4">
+          <label for="myphoto" class="form-label">강아지 사진</label>
+		  <div id="imgDiv"><img id="dog_photo"></div>
+		</div>
+        </form>
+</div>
+<!-- 본문끝 -->
+<!-- Footer -->
+</td></tr>
+<tr valign="bottom" height="150"  bgcolor="#ffffff">
+<td>
+	<div id="footer"></div>
+</td>
+</tr>
+</table>
+<script>
+
+    	/* $(function(){
+    		
+    		$.ajax({url:'memberinfo',
+        			type:'GET',
+        			contentType: "application/json; charset=UTF-8",
+        			success:function(data){
+        				data=JSON.parse(data);
+        				
+        				var koreanDateFormat = new Intl.DateTimeFormat("ko-KR", { //Unix타임스태프형으로 받는 가입일을 한국식으로변경
+        					  year: "numeric",
+        					  month: "long",
+        					  day: "numeric",
+        					  hour: "numeric",
+        					  minute: "numeric",
+        					  second: "numeric",
+        					  timeZone: "Asia/Seoul"
+        					});
+        				
+        				joindate = koreanDateFormat.format(data.joindate);
+        				
+        				document.getElementById('id').value=data.id;
+        				document.getElementById('name').value=data.name;
+        				document.getElementById('nickname').value=data.nickname;
+        				document.getElementById('phone').value=data.phone;
+        				document.getElementById('email').value=data.email;
+        				document.getElementById('address').value=data.address;
+        				document.getElementById('address_detail').value=data.address_detail;
+        				document.getElementById('zipcode').value=data.zipcode;
+        				document.getElementById('latitude').value=data.latitude;
+        				document.getElementById('longitude').value=data.longitude;
+        				document.getElementById('joindate').value=joindate;
+        				$('#memberPhoto').setAttribute('src','/resources/upload/'+data.photo);
+        			},error:function(){
+            			var baseUrl = window.location.origin;
+            			var MainUrl = baseUrl+"/main";
+        				alert('서버요청 및 json파일 불러오기 실패!!!');
+						document.location=MainUrl;
+        			}
+    		})
+
+    	}) */
+
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CartMapper">
+	<!-- 카트에 아이템 추가 -->
+	<insert id="addCart" parameterType="com.dogwalker.domain.CartVO">
+		INSERT INTO cart (cart_num, it_num, id, quantity)
+		VALUES (cart_seq.NEXTVAL, #{it_num}, #{id}, #{quantity})
+	</insert>
+	
+	<!-- 카트에서 아이템 삭제 -->
+	<delete id="deleteCart" parameterType="int">
+		DELETE FROM cart WHERE cart_num = #{cart_num}
+	</delete>
+	
+	<!-- 카트 내 아이템 수량 수정 -->
+	<update id="modifyCount" parameterType="com.dogwalker.domain.CartVO">
+		UPDATE cart
+        SET quantity = #{quantity}
+        WHERE cart_num = #{cart_num}
+	</update>
+	
+	<!-- 사용자의 카트 목록 조회  -->
+	<select id="getCart" parameterType="string" resultType="com.dogwalker.domain.CartVO">
+		SELECT c.cart_num, c.it_num, c.id, c.quantity, i.it_name,i.it_price,i.it_img
+		FROM cart c
+		JOIN item i ON c.it_num = i.it_num
+		WHERE c.id = #{id}
+	</select>
+	
+	<!-- 카트 내 아이템 확인  -->
+	<select id="checkCart" parameterType="int" resultType="com.dogwalker.domain.CartVO">
+		SELECT * FROM cart WHERE cart_num = #{cart_num}
+	</select>
+	
+	
+</mapper>
